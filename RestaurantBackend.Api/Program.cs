@@ -67,8 +67,8 @@ builder.Services.AddCors(options =>
             else
             {
                 policy.WithOrigins(
-                    "https://gaido.solutions",
-                    "https://www.gaido.solutions"
+                    "http://restaurant-app.aguirrelabs.dev",
+                    "https://restaurant-app.aguirrelabs.dev"
                 )
                 .AllowCredentials()
                 .AllowAnyMethod()
