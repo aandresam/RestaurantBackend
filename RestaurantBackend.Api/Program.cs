@@ -54,7 +54,6 @@ builder.Services.AddCors(options =>
         {
             if (builder.Environment.IsDevelopment())
             {
-                // Desarrollo: especificar origen exacto
                 policy.WithOrigins("http://localhost:4200", "http://localhost:4500")
                       .AllowCredentials()
                       .AllowAnyMethod()
