@@ -1,0 +1,21 @@
+services:
+  oracle:
+    image: gvenzl/oracle-xe:21-slim
+    container_name: restaurant-oracle
+    environment:
+      ORACLE_PASSWORD: restaurant
+      APP_USER: restaurante
+      APP_USER_PASSWORD: restaurant
+    ports:
+      - "1522:1521"
+    volumes:
+      - oracle-data:/opt/oracle/oradata
+      - ./db/init:/container-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "bash", "-lc", "healthcheck.sh"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+volumes:
+  oracle-data:

@@ -1,0 +1,23 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace RestaurantBackend.Infrastructure.Persistence.Entities;
+
+public partial class Supervisor
+{
+    public int IdSupervisor { get; set; }
+
+    public string Nombres { get; set; } = null!;
+
+    public string Apellidos { get; set; } = null!;
+
+    public int? Edad { get; set; }
+
+    public int? Antiguedad { get; set; }
+
+    public DateTime CreatedAt { get; set; }
+
+    public DateTime? UpdatedAt { get; set; }
+
+    public virtual ICollection<DetalleFactura> DetalleFacturas { get; set; } = new List<DetalleFactura>();
+}
