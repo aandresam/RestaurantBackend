@@ -21,8 +21,7 @@ public sealed class MeseroPersistence(RestaurantDbContext dbContext) : IMeseroPe
                 Edad = x.Edad,
                 Antiguedad = x.Antiguedad,
             })
-            .ToListAsync(cancellationToken)
-            .ConfigureAwait(false);
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<MeseroDto?> GetByIdAsync(int idMesero, CancellationToken cancellationToken = default)
@@ -38,8 +37,7 @@ public sealed class MeseroPersistence(RestaurantDbContext dbContext) : IMeseroPe
                 Edad = x.Edad,
                 Antiguedad = x.Antiguedad,
             })
-            .FirstOrDefaultAsync(cancellationToken)
-            .ConfigureAwait(false);
+            .FirstOrDefaultAsync(cancellationToken);
     }
 
     public async Task<MeseroDto> CreateAsync(CreateMeseroDto request, CancellationToken cancellationToken = default)
@@ -52,8 +50,8 @@ public sealed class MeseroPersistence(RestaurantDbContext dbContext) : IMeseroPe
             Antiguedad = request.Antiguedad,
         };
 
-        await dbContext.Meseros.AddAsync(entity, cancellationToken).ConfigureAwait(false);
-        await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        await dbContext.Meseros.AddAsync(entity, cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         return new MeseroDto
         {
@@ -68,8 +66,7 @@ public sealed class MeseroPersistence(RestaurantDbContext dbContext) : IMeseroPe
     public async Task<bool> UpdateAsync(int idMesero, UpdateMeseroDto request, CancellationToken cancellationToken = default)
     {
         var entity = await dbContext.Meseros
-            .FirstOrDefaultAsync(x => x.IdMesero == idMesero, cancellationToken)
-            .ConfigureAwait(false);
+            .FirstOrDefaultAsync(x => x.IdMesero == idMesero, cancellationToken);
 
         if (entity is null)
         {
@@ -81,7 +78,7 @@ public sealed class MeseroPersistence(RestaurantDbContext dbContext) : IMeseroPe
         entity.Edad = request.Edad;
         entity.Antiguedad = request.Antiguedad;
 
-        await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        await dbContext.SaveChangesAsync(cancellationToken);
         return true;
     }
 
@@ -97,7 +94,7 @@ public sealed class MeseroPersistence(RestaurantDbContext dbContext) : IMeseroPe
         }
 
         dbContext.Meseros.Remove(entity);
-        await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        await dbContext.SaveChangesAsync(cancellationToken);
         return true;
     }
 }

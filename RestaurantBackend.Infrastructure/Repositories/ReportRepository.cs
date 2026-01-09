@@ -38,8 +38,7 @@ public sealed class ReportRepository(RestaurantDbContext dbContext) : IReportRep
             .OrderByDescending(x => x.TotalVendido)
             .ThenBy(x => x.Nombres)
             .ThenBy(x => x.Apellidos)
-            .ToListAsync(cancellationToken)
-            .ConfigureAwait(false);
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<IReadOnlyList<ClienteConsumoDto>> GetCustomersWithMinimumSpendAsync(
@@ -71,8 +70,7 @@ public sealed class ReportRepository(RestaurantDbContext dbContext) : IReportRep
             })
             .Where(x => x.TotalConsumo >= minimumSpend)
             .OrderByDescending(x => x.TotalConsumo)
-            .ToListAsync(cancellationToken)
-            .ConfigureAwait(false);
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<ProductoMasVendidoDto?> GetCustomersWithMinimumSpendAsync(
@@ -100,7 +98,6 @@ public sealed class ReportRepository(RestaurantDbContext dbContext) : IReportRep
             })
             .OrderByDescending(x => x.Cantidad)
             .ThenByDescending(x => x.TotalFacturado)
-            .FirstOrDefaultAsync(cancellationToken)
-            .ConfigureAwait(false);
+            .FirstOrDefaultAsync(cancellationToken);
     }
 }

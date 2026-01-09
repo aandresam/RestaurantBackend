@@ -24,10 +24,6 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<RestaurantDbContext>(options =>
     options.UseOracle(connectionString));
 
-builder.Services.AddScoped<IRepository<Cliente, int>, ClienteRepository>();
-builder.Services.AddScoped<IRepository<Mesa, int>, MesaRepository>();
-builder.Services.AddScoped<IRepository<Mesero, int>, MeseroRepository>();
-builder.Services.AddScoped<IRepository<Supervisor, int>, SupervisorRepository>();
 builder.Services.AddScoped<IRepository<Factura, int>, FacturaRepository>();
 builder.Services.AddScoped<IRepository<DetalleFactura, int>, DetalleFacturaRepository>();
 

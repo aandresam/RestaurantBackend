@@ -21,8 +21,7 @@ public sealed class SupervisorPersistence(RestaurantDbContext dbContext) : ISupe
                 Edad = x.Edad,
                 Antiguedad = x.Antiguedad,
             })
-            .ToListAsync(cancellationToken)
-            .ConfigureAwait(false);
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<SupervisorDto?> GetByIdAsync(int idSupervisor, CancellationToken cancellationToken = default)
@@ -38,8 +37,7 @@ public sealed class SupervisorPersistence(RestaurantDbContext dbContext) : ISupe
                 Edad = x.Edad,
                 Antiguedad = x.Antiguedad,
             })
-            .FirstOrDefaultAsync(cancellationToken)
-            .ConfigureAwait(false);
+            .FirstOrDefaultAsync(cancellationToken);
     }
 
     public async Task<SupervisorDto> CreateAsync(CreateSupervisorDto request, CancellationToken cancellationToken = default)
@@ -52,8 +50,8 @@ public sealed class SupervisorPersistence(RestaurantDbContext dbContext) : ISupe
             Antiguedad = request.Antiguedad,
         };
 
-        await dbContext.Supervisors.AddAsync(entity, cancellationToken).ConfigureAwait(false);
-        await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        await dbContext.Supervisors.AddAsync(entity, cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         return new SupervisorDto
         {
@@ -68,8 +66,7 @@ public sealed class SupervisorPersistence(RestaurantDbContext dbContext) : ISupe
     public async Task<bool> UpdateAsync(int idSupervisor, UpdateSupervisorDto request, CancellationToken cancellationToken = default)
     {
         var entity = await dbContext.Supervisors
-            .FirstOrDefaultAsync(x => x.IdSupervisor == idSupervisor, cancellationToken)
-            .ConfigureAwait(false);
+            .FirstOrDefaultAsync(x => x.IdSupervisor == idSupervisor, cancellationToken);
 
         if (entity is null)
         {
@@ -81,15 +78,14 @@ public sealed class SupervisorPersistence(RestaurantDbContext dbContext) : ISupe
         entity.Edad = request.Edad;
         entity.Antiguedad = request.Antiguedad;
 
-        await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        await dbContext.SaveChangesAsync(cancellationToken);
         return true;
     }
 
     public async Task<bool> DeleteAsync(int idSupervisor, CancellationToken cancellationToken = default)
     {
         var entity = await dbContext.Supervisors
-            .FirstOrDefaultAsync(x => x.IdSupervisor == idSupervisor, cancellationToken)
-            .ConfigureAwait(false);
+            .FirstOrDefaultAsync(x => x.IdSupervisor == idSupervisor, cancellationToken);
 
         if (entity is null)
         {
@@ -97,7 +93,7 @@ public sealed class SupervisorPersistence(RestaurantDbContext dbContext) : ISupe
         }
 
         dbContext.Supervisors.Remove(entity);
-        await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        await dbContext.SaveChangesAsync(cancellationToken);
         return true;
     }
 }

@@ -21,7 +21,7 @@ public abstract class EfRepository<TEntity, TKey> : IRepository<TEntity, TKey>
         => Set.FindAsync([id], cancellationToken).AsTask();
 
     public virtual async Task<IReadOnlyList<TEntity>> ListAsync(CancellationToken cancellationToken = default)
-        => await Set.AsNoTracking().ToListAsync(cancellationToken).ConfigureAwait(false);
+        => await Set.AsNoTracking().ToListAsync(cancellationToken);
 
     public virtual Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
         => Set.AddAsync(entity, cancellationToken).AsTask();

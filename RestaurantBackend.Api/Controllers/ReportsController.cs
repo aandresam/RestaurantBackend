@@ -35,6 +35,6 @@ public class ReportsController(IReportService reportService) : ControllerBase
         CancellationToken cancellationToken)
     {
         var result = await reportService.GetProductoMasVendidoDelMesAsync(year, month, cancellationToken);
-        return result is not null ? Ok(result) : NotFound();
+        return Ok(result);
     }
 }

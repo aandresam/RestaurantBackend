@@ -20,8 +20,7 @@ public sealed class MesaPersistence(RestaurantDbContext dbContext) : IMesaPersis
                 Reservada = x.Reservada,
                 Puestos = x.Puestos,
             })
-            .ToListAsync(cancellationToken)
-            .ConfigureAwait(false);
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<MesaDto?> GetByNroMesaAsync(int nroMesa, CancellationToken cancellationToken = default)
@@ -37,8 +36,7 @@ public sealed class MesaPersistence(RestaurantDbContext dbContext) : IMesaPersis
                 Reservada = x.Reservada,
                 Puestos = x.Puestos,
             })
-            .FirstOrDefaultAsync(cancellationToken)
-            .ConfigureAwait(false);
+            .FirstOrDefaultAsync(cancellationToken);
     }
 
     public async Task<MesaDto> CreateAsync(CreateMesaDto request, CancellationToken cancellationToken = default)
@@ -51,8 +49,8 @@ public sealed class MesaPersistence(RestaurantDbContext dbContext) : IMesaPersis
             Puestos = request.Puestos,
         };
 
-        await dbContext.Mesas.AddAsync(entity, cancellationToken).ConfigureAwait(false);
-        await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        await dbContext.Mesas.AddAsync(entity, cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         return new MesaDto
         {
@@ -66,8 +64,7 @@ public sealed class MesaPersistence(RestaurantDbContext dbContext) : IMesaPersis
     public async Task<bool> UpdateAsync(int nroMesa, UpdateMesaDto request, CancellationToken cancellationToken = default)
     {
         var entity = await dbContext.Mesas
-            .FirstOrDefaultAsync(x => x.NroMesa == nroMesa, cancellationToken)
-            .ConfigureAwait(false);
+            .FirstOrDefaultAsync(x => x.NroMesa == nroMesa, cancellationToken);
 
         if (entity is null)
         {
@@ -78,15 +75,14 @@ public sealed class MesaPersistence(RestaurantDbContext dbContext) : IMesaPersis
         entity.Reservada = request.Reservada;
         entity.Puestos = request.Puestos;
 
-        await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        await dbContext.SaveChangesAsync(cancellationToken);
         return true;
     }
 
     public async Task<bool> DeleteAsync(int nroMesa, CancellationToken cancellationToken = default)
     {
         var entity = await dbContext.Mesas
-            .FirstOrDefaultAsync(x => x.NroMesa == nroMesa, cancellationToken)
-            .ConfigureAwait(false);
+            .FirstOrDefaultAsync(x => x.NroMesa == nroMesa, cancellationToken);
 
         if (entity is null)
         {
@@ -94,7 +90,7 @@ public sealed class MesaPersistence(RestaurantDbContext dbContext) : IMesaPersis
         }
 
         dbContext.Mesas.Remove(entity);
-        await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        await dbContext.SaveChangesAsync(cancellationToken);
         return true;
     }
 }

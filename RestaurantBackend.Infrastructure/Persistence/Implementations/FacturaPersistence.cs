@@ -16,8 +16,7 @@ public sealed class FacturaPersistence(
     {
         var nuevoNroFactura = await dbContext.Facturas
             .AsNoTracking()
-            .MaxAsync(x => (int?)x.NroFactura, cancellationToken)
-            .ConfigureAwait(false) ?? 0;
+            .MaxAsync(x => (int?)x.NroFactura, cancellationToken) ?? 0;
 
         nuevoNroFactura++;
 
@@ -30,8 +29,8 @@ public sealed class FacturaPersistence(
             Fecha = DateTime.UtcNow,
         };
 
-        await facturaRepository.AddAsync(factura, cancellationToken).ConfigureAwait(false);
-        await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        await facturaRepository.AddAsync(factura, cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         decimal totalFacturado = 0m;
 
@@ -45,11 +44,11 @@ public sealed class FacturaPersistence(
                 Valor = dto.Valor,
             };
 
-            await detalleRepository.AddAsync(detalle, cancellationToken).ConfigureAwait(false);
+            await detalleRepository.AddAsync(detalle, cancellationToken);
             totalFacturado += dto.Valor;
         }
 
-        await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new FacturaDto
         {
@@ -101,8 +100,7 @@ public sealed class FacturaPersistence(
                     })
                     .ToList(),
             })
-            .ToListAsync(cancellationToken)
-            .ConfigureAwait(false);
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<FacturaFullDto?> GetByIdAsync(int idFactura, CancellationToken cancellationToken = default)
@@ -132,8 +130,7 @@ public sealed class FacturaPersistence(
                     })
                     .ToList(),
             })
-            .FirstOrDefaultAsync(cancellationToken)
-            .ConfigureAwait(false);
+            .FirstOrDefaultAsync(cancellationToken);
     }
 
     public async Task<FacturaFullDto?> AddDetalleAsync(int idFactura, AddDetalleFacturaDto request, CancellationToken cancellationToken = default)
@@ -156,18 +153,17 @@ public sealed class FacturaPersistence(
             Valor = request.Valor,
         };
 
-        await detalleRepository.AddAsync(detalle, cancellationToken).ConfigureAwait(false);
-        await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        await detalleRepository.AddAsync(detalle, cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return await GetByIdAsync(idFactura, cancellationToken).ConfigureAwait(false);
+        return await GetByIdAsync(idFactura, cancellationToken);
     }
 
     public async Task<FacturaFullDto?> ReplaceDetallesAsync(int idFactura, ReplaceDetallesFacturaDto request, CancellationToken cancellationToken = default)
     {
         var facturaExists = await dbContext.Facturas
             .AsNoTracking()
-            .AnyAsync(x => x.IdFactura == idFactura, cancellationToken)
-            .ConfigureAwait(false);
+            .AnyAsync(x => x.IdFactura == idFactura, cancellationToken);
 
         if (!facturaExists)
         {
@@ -176,8 +172,7 @@ public sealed class FacturaPersistence(
 
         var detallesActuales = await dbContext.DetalleFacturas
             .Where(x => x.IdFactura == idFactura)
-            .ToListAsync(cancellationToken)
-            .ConfigureAwait(false);
+            .ToListAsync(cancellationToken);
 
         if (detallesActuales.Count > 0)
         {
@@ -194,18 +189,17 @@ public sealed class FacturaPersistence(
                 Valor = dto.Valor,
             };
 
-            await dbContext.DetalleFacturas.AddAsync(detalle, cancellationToken).ConfigureAwait(false);
+            await dbContext.DetalleFacturas.AddAsync(detalle, cancellationToken);
         }
 
-        await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-        return await GetByIdAsync(idFactura, cancellationToken).ConfigureAwait(false);
+        await dbContext.SaveChangesAsync(cancellationToken);
+        return await GetByIdAsync(idFactura, cancellationToken);
     }
 
     public async Task<bool> DeleteDetalleAsync(int idFactura, int idDetalleFactura, CancellationToken cancellationToken = default)
     {
         var detalle = await dbContext.DetalleFacturas
-            .FirstOrDefaultAsync(x => x.IdFactura == idFactura && x.IdDetalleFactura == idDetalleFactura, cancellationToken)
-            .ConfigureAwait(false);
+            .FirstOrDefaultAsync(x => x.IdFactura == idFactura && x.IdDetalleFactura == idDetalleFactura, cancellationToken);
 
         if (detalle is null)
         {
@@ -213,7 +207,7 @@ public sealed class FacturaPersistence(
         }
 
         dbContext.DetalleFacturas.Remove(detalle);
-        await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        await dbContext.SaveChangesAsync(cancellationToken);
         return true;
     }
 }

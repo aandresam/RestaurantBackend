@@ -14,7 +14,7 @@ public class FacturasController(IFacturaService facturaService) : ControllerBase
         [FromQuery] DateTime? hasta,
         CancellationToken cancellationToken)
     {
-        var result = await facturaService.ListAsync(startDate, hasta, cancellationToken).ConfigureAwait(false);
+        var result = await facturaService.ListAsync(startDate, hasta, cancellationToken);
         return Ok(result);
     }
 
@@ -23,7 +23,7 @@ public class FacturasController(IFacturaService facturaService) : ControllerBase
         [FromRoute] int idFactura,
         CancellationToken cancellationToken)
     {
-        var result = await facturaService.GetByIdAsync(idFactura, cancellationToken).ConfigureAwait(false);
+        var result = await facturaService.GetByIdAsync(idFactura, cancellationToken);
         return result is null ? NotFound() : Ok(result);
     }
 
@@ -32,7 +32,7 @@ public class FacturasController(IFacturaService facturaService) : ControllerBase
         [FromBody] CreateFacturaDto request,
         CancellationToken cancellationToken)
     {
-        var result = await facturaService.CreateFacturaAsync(request, cancellationToken).ConfigureAwait(false);
+        var result = await facturaService.CreateFacturaAsync(request, cancellationToken);
         return CreatedAtAction(nameof(GetById), new { idFactura = result.IdFactura }, result);
     }
 
@@ -42,7 +42,7 @@ public class FacturasController(IFacturaService facturaService) : ControllerBase
         [FromBody] AddDetalleFacturaDto request,
         CancellationToken cancellationToken)
     {
-        var result = await facturaService.AddDetalleAsync(idFactura, request, cancellationToken).ConfigureAwait(false);
+        var result = await facturaService.AddDetalleAsync(idFactura, request, cancellationToken);
         return result is null ? NotFound() : Ok(result);
     }
 
@@ -52,7 +52,7 @@ public class FacturasController(IFacturaService facturaService) : ControllerBase
         [FromBody] ReplaceDetallesFacturaDto request,
         CancellationToken cancellationToken)
     {
-        var result = await facturaService.ReplaceDetallesAsync(idFactura, request, cancellationToken).ConfigureAwait(false);
+        var result = await facturaService.ReplaceDetallesAsync(idFactura, request, cancellationToken);
         return result is null ? NotFound() : Ok(result);
     }
 
@@ -62,7 +62,7 @@ public class FacturasController(IFacturaService facturaService) : ControllerBase
         [FromRoute] int idDetalleFactura,
         CancellationToken cancellationToken)
     {
-        var deleted = await facturaService.DeleteDetalleAsync(idFactura, idDetalleFactura, cancellationToken).ConfigureAwait(false);
+        var deleted = await facturaService.DeleteDetalleAsync(idFactura, idDetalleFactura, cancellationToken);
         return deleted ? NoContent() : NotFound();
     }
 }

@@ -22,8 +22,7 @@ public sealed class ClientePersistence(RestaurantDbContext dbContext) : ICliente
                 Direccion = x.Direccion,
                 Telefono = x.Telefono,
             })
-            .ToListAsync(cancellationToken)
-            .ConfigureAwait(false);
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<ClienteDto?> GetByIdAsync(int idCliente, CancellationToken cancellationToken = default)
@@ -40,8 +39,7 @@ public sealed class ClientePersistence(RestaurantDbContext dbContext) : ICliente
                 Direccion = x.Direccion,
                 Telefono = x.Telefono,
             })
-            .FirstOrDefaultAsync(cancellationToken)
-            .ConfigureAwait(false);
+            .FirstOrDefaultAsync(cancellationToken);
     }
 
     public async Task<ClienteDto> CreateAsync(CreateClienteDto request, CancellationToken cancellationToken = default)
@@ -55,8 +53,8 @@ public sealed class ClientePersistence(RestaurantDbContext dbContext) : ICliente
             Telefono = request.Telefono,
         };
 
-        await dbContext.Clientes.AddAsync(entity, cancellationToken).ConfigureAwait(false);
-        await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        await dbContext.Clientes.AddAsync(entity, cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         return new ClienteDto
         {
@@ -72,8 +70,7 @@ public sealed class ClientePersistence(RestaurantDbContext dbContext) : ICliente
     public async Task<bool> UpdateAsync(int idCliente, UpdateClienteDto request, CancellationToken cancellationToken = default)
     {
         var entity = await dbContext.Clientes
-            .FirstOrDefaultAsync(x => x.IdCliente == idCliente, cancellationToken)
-            .ConfigureAwait(false);
+            .FirstOrDefaultAsync(x => x.IdCliente == idCliente, cancellationToken);
 
         if (entity is null)
         {
@@ -86,15 +83,14 @@ public sealed class ClientePersistence(RestaurantDbContext dbContext) : ICliente
         entity.Direccion = request.Direccion;
         entity.Telefono = request.Telefono;
 
-        await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        await dbContext.SaveChangesAsync(cancellationToken);
         return true;
     }
 
     public async Task<bool> DeleteAsync(int idCliente, CancellationToken cancellationToken = default)
     {
         var entity = await dbContext.Clientes
-            .FirstOrDefaultAsync(x => x.IdCliente == idCliente, cancellationToken)
-            .ConfigureAwait(false);
+            .FirstOrDefaultAsync(x => x.IdCliente == idCliente, cancellationToken);
 
         if (entity is null)
         {
@@ -102,7 +98,7 @@ public sealed class ClientePersistence(RestaurantDbContext dbContext) : ICliente
         }
 
         dbContext.Clientes.Remove(entity);
-        await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        await dbContext.SaveChangesAsync(cancellationToken);
         return true;
     }
 }
